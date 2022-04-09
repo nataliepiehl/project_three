@@ -5,7 +5,7 @@ import pandas as pd
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, func
+from sqlalchemy import create_engine
 from flask import Flask, jsonify
 
 # ------------------------------------------------------------
@@ -20,15 +20,12 @@ Base = automap_base()
 # Reflest the tables
 Base.prepare(engine, reflect=True)
 
-# Save references to the tables
-movies = Base.classes.movies
-people = Base.classes.people
-ratings = Base.classes.ratings
-stars = Base.classes.stars
-directors = Base.classes.directors
-
-movies = pd.read_sql_query('select * from people', con = engine)
-print(movies.head())
+# # Save references to the tables
+# movies = Base.classes.movies
+# people = Base.classes.people
+# ratings = Base.classes.ratings
+# stars = Base.classes.stars
+# directors = Base.classes.directors
 
 # ------------------------------------------------------------
 # Initialize Flask
@@ -51,15 +48,15 @@ def names():
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
-    """Return a list of all passenger names"""
-
     # Query all passengers
     results = session.query(movies.id).all()
 
+    # Close the session
     session.close()
 
     # Convert list of tuples into normal list
     all_names = list(np.ravel(results))
+    
 
     return jsonify(all_names)
 
