@@ -1,5 +1,6 @@
 # ------------------------------------------------------------
 # Import modules
+import json
 import numpy as np
 import pandas as pd
 import sqlalchemy
@@ -20,9 +21,9 @@ Base = automap_base()
 # Reflest the tables
 Base.prepare(engine, reflect=True)
 
-# # Save references to the tables
-# movies = Base.classes.movies
-# people = Base.classes.people
+# Save references to the tables
+movies = Base.classes.movies
+people = Base.classes.people
 # ratings = Base.classes.ratings
 # stars = Base.classes.stars
 # directors = Base.classes.directors
@@ -39,26 +40,32 @@ def welcome():
     """List all available api routes."""
     return (
         f"Available Routes:<br/>"
-        f"/api/v1.0/names<br/>"
+        f"/api/movie_title<br/>"
     )
 
 
-@app.route("/api/v1.0/names")
-def names():
+@app.route("/api/movie_title/<title>")
+def movie_title(title):
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
+    # Replace underscores with spaces and capitalize
+    title = title.replace("&", " ").title()
+    print(title)
+
     # Query all passengers
-    results = session.query(movies.id).all()
+    results = session.query(movies.title, movies.year, movies.id).filter(movies.title == title).all()[0]
 
     # Close the session
     session.close()
 
-    # Convert list of tuples into normal list
-    all_names = list(np.ravel(results))
-    
+    # Define dictionary
+    movie = dict(zip(["title", "year", "id"], results))
 
-    return jsonify(all_names)
+    # Convert decimal to float
+    movie['year'] = float(movie['year'])
+
+    return(json.dumps(movie, indent = 4))
 
 if __name__ == '__main__':
     app.run(debug=True)
