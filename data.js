@@ -12,17 +12,17 @@ var title = "the&mummy";
 
 // Define full query
 let full_query = url + query + title;
-document.write(full_query);
+//document.write(full_query);
+console.log(full_query)
 
 // Fetch the data
 fetch(full_query)
-    .then(response => {
-        response => response.json()
-    })
+    .then(response =>
+        response.json()
+    )
     .then((data) => {
-        let movie = data
+        console.log(data)
     })
 
-document.write(movie);
 // let response = fetch(full_query);
 

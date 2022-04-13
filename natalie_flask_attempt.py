@@ -8,6 +8,7 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 from flask import Flask, jsonify
+from flask_cors import CORS
 
 # ------------------------------------------------------------
 # Setup database
@@ -31,6 +32,7 @@ people = Base.classes.people
 # ------------------------------------------------------------
 # Initialize Flask
 app = Flask(__name__)
+CORS(app)
 
 # ------------------------------------------------------------
 # Setup Flask routes
@@ -65,7 +67,7 @@ def movie_title(title):
     # Convert decimal to float
     movie['year'] = float(movie['year'])
 
-    return(json.dumps(movie, indent = 4))
+    return jsonify(movie)
 
 if __name__ == '__main__':
     app.run(debug=True)
