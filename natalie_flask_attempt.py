@@ -45,6 +45,30 @@ def welcome():
         f"/api/movie_title<br/>"
     )
 
+@app.route("/api/movies_load/")
+def movies_load():
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    # Query all passengers
+    results = session.query(movies.title, movies.year, movies.id).all()
+
+    # Close the session
+    session.close()
+
+    # Convert "rows" to a normal list
+    results_jsonifiable = []
+    for row in results:
+        row_list = []
+        for element in row:
+            if not (isinstance(element, int) | isinstance(element, str)):
+                row_list.append(float(element))
+            else:
+                row_list.append(element)
+        results_jsonifiable.append(row_list)
+
+    return json.dumps(results_jsonifiable)
+
 
 @app.route("/api/movie_title/<title>")
 def movie_title(title):

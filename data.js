@@ -2,16 +2,19 @@
 var url = "http://127.0.0.1:5000/";
 
 // Define query
-var query = "api/movie_title/";
+var query = "api/movies_load/";
 
 // Define title of interest
-var title = "the&mummy";
+//var title = "the&mummy";
 
 // Define year of interest
 // var year = 1955
 
 // Define full query
-let full_query = url + query + title;
+console.log(url)
+console.log(query)
+let full_query = url + query;
+
 //document.write(full_query);
 console.log(full_query)
 
