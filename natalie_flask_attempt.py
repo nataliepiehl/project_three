@@ -6,7 +6,7 @@ import pandas as pd
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect
 from flask import Flask, jsonify
 from flask_cors import CORS
 
@@ -21,6 +21,10 @@ Base = automap_base()
 
 # Reflest the tables
 Base.prepare(engine, reflect=True)
+
+# Add primary key to ratings
+with engine.connect() as con:
+    con.execute('ALTER TABLE ratings ADD PRIMARY KEY (`ID_column`);')
 
 # Save references to the tables
 movies = Base.classes.movies
@@ -68,6 +72,58 @@ def movies_load():
         results_jsonifiable.append(row_list)
 
     return json.dumps(results_jsonifiable)
+
+@app.route("/api/people_load/")
+def people_load():
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    # Query all passengers
+    results = session.query(people.id, people.name, people.birth).all()
+
+    # Close the session
+    session.close()
+
+    # Convert "rows" to a normal list
+    results_jsonifiable = []
+    for row in results:
+        row_list = []
+        for element in row:
+            if element is None:
+                pass
+            elif not (isinstance(element, int) | isinstance(element, str)):
+                row_list.append(float(element))
+            else:
+                row_list.append(element)
+        results_jsonifiable.append(row_list)
+
+    return json.dumps(results_jsonifiable)
+
+# @app.route("/api/ratings_load/")
+# def ratings_load():
+#     # Create our session (link) from Python to the DB
+#     session = Session(engine)
+#
+#     # Query all passengers
+#     results = session.query(ratings.movie_id, ratings.rating, ratings.votes).all()
+#
+#     # Close the session
+#     session.close()
+#
+#     # Convert "rows" to a normal list
+#     results_jsonifiable = []
+#     for row in results:
+#         row_list = []
+#         for element in row:
+#             if element is None:
+#                 pass
+#             elif not (isinstance(element, int) | isinstance(element, str)):
+#                 row_list.append(float(element))
+#             else:
+#                 row_list.append(element)
+#         results_jsonifiable.append(row_list)
+#
+#     return json.dumps(results_jsonifiable)
 
 
 @app.route("/api/movie_title/<title>")
