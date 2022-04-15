@@ -27,7 +27,7 @@ fetch(full_query)
         console.log(data)
     })
 
-// let response = fetch(full_query);
+let response = fetch(full_query);
 
 function buildMovie(movieTitle) {
     d3.json("movie").then((data) => {
