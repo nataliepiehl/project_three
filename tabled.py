@@ -1,39 +1,43 @@
 import sqlalchemy
-from sqlalchemy.ext.automap import automap_base
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, inspect
-from sqlalchemy import Column, Date, Integer, String
-from sqlalchemy.ext.automap import automap_base
+from datetime import date
+from sqlalchemy import Float, create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column,Sequence, Integer, String, MetaData, Table
+from sqlalchemy.orm import sessionmaker,relationship
+from sqlalchemy.orm.exc import NoResultFound,MultipleResultsFound
+from sqlalchemy.dialects import postgresql
+from sqlalchemy.ext.compiler import compiles
+from sqlalchemy.sql.expression import ColumnClause
+from sqlalchemy.sql import compiler
+from sqlalchemy import create_engine
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
 
 engine = create_engine("sqlite:///movies.db", echo=False)
 
-session = Session(engine)
+connection = engine.connect()
 
-inspector = inspect(engine)
+Base = declarative_base()
 
-Base = automap_base()
-Base.prepare(engine, reflect=True)
+class movies(Base):
+    __tablename__ = 'movies'
+    ID = Column(Integer, primary_key=True)
+    TITLE = Column(String)
+    YEAR = Column(Integer)
 
-# columns = inspector.get_columns('movies')
-# for c in columns:
-#     print(c['name'], c["type"])
+class ratings(Base):
+    __tablename__ = 'ratings'
+    MOVIE_ID = Column(Integer)
+    RATING = Column(Float)
+    VOTES = Column(Integer)
 
+Session = sessionmaker(bind=connection)
+session = Session()
 
-peopletable = Base.classes.people
-starstable = Base.classes.stars
+query = session.query(movies).join(ratings, movies.ID==ratings.MOVIE_ID)
 
+print(query)
 
-same_person = session.query(peopletable, starstable).filter(peopletable.id == starstable.person_id).limit(10).all()
-
-for person in same_person:
-    (peopletable, starstable) = person
-    print(peopletable.id)
-    print(starstable.movie_id)
-
-# combo = [ratingtable.movie_id, ratingtable.person_id, movietable.title, movietable.year]
-# mergeone = session.query(*combo).filter(movietable.id == ratingtable.movie_id).limit(10).all()
-
-# print(mergeone)
 
 
     
