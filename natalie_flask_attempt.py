@@ -101,8 +101,8 @@ def ratings_load():
     session = Session(engine)
 
     # Query all passengers
-    results = session.query(ratingsmix.id, ratingsmix.title, ratingsmix.year,
-                            ratingsmix.movie_id, ratingsmix.rating, ratingsmix.votes).all()
+    results = session.query(ratingmix.id, ratingmix.title, ratingmix.year,
+                            ratingmix.movie_id, ratingmix.rating, ratingmix.votes).all()
 
     # Close the session
     session.close()
