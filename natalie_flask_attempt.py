@@ -22,14 +22,10 @@ Base = automap_base()
 # Reflest the tables
 Base.prepare(engine, reflect=True)
 
-# Add primary key to ratings
-with engine.connect() as con:
-    con.execute('ALTER TABLE ratings ADD PRIMARY KEY (`ID_column`);')
-
 # Save references to the tables
 movies = Base.classes.movies
 people = Base.classes.people
-ratingsmix = Base.classes.ratingsmix
+ratingmix = Base.classes.ratingmix
 starsmix = Base.classes.starsmix
 directorsmix = Base.classes.directorsmix
 
@@ -100,7 +96,7 @@ def people_load():
     return json.dumps(results_jsonifiable)
 
 @app.route("/api/ratings_load/")
-def people_load():
+def ratings_load():
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
@@ -127,7 +123,7 @@ def people_load():
     return json.dumps(results_jsonifiable)
 
 @app.route("/api/stars_load/")
-def people_load():
+def stars_load():
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
@@ -154,7 +150,7 @@ def people_load():
     return json.dumps(results_jsonifiable)
 
 @app.route("/api/directors_load/")
-def people_load():
+def directors_load():
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
