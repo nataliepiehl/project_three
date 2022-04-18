@@ -29,9 +29,9 @@ with engine.connect() as con:
 # Save references to the tables
 movies = Base.classes.movies
 people = Base.classes.people
-# ratings = Base.classes.ratings
-# stars = Base.classes.stars
-# directors = Base.classes.directors
+ratingsmix = Base.classes.ratingsmix
+starsmix = Base.classes.starsmix
+directorsmix = Base.classes.directorsmix
 
 # ------------------------------------------------------------
 # Initialize Flask
@@ -99,32 +99,86 @@ def people_load():
 
     return json.dumps(results_jsonifiable)
 
-# @app.route("/api/ratings_load/")
-# def ratings_load():
-#     # Create our session (link) from Python to the DB
-#     session = Session(engine)
-#
-#     # Query all passengers
-#     results = session.query(ratings.movie_id, ratings.rating, ratings.votes).all()
-#
-#     # Close the session
-#     session.close()
-#
-#     # Convert "rows" to a normal list
-#     results_jsonifiable = []
-#     for row in results:
-#         row_list = []
-#         for element in row:
-#             if element is None:
-#                 pass
-#             elif not (isinstance(element, int) | isinstance(element, str)):
-#                 row_list.append(float(element))
-#             else:
-#                 row_list.append(element)
-#         results_jsonifiable.append(row_list)
-#
-#     return json.dumps(results_jsonifiable)
+@app.route("/api/ratings_load/")
+def people_load():
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
 
+    # Query all passengers
+    results = session.query(ratingsmix.id, ratingsmix.title, ratingsmix.year,
+                            ratingsmix.movie_id, ratingsmix.rating, ratingsmix.votes).all()
+
+    # Close the session
+    session.close()
+
+    # Convert "rows" to a normal list
+    results_jsonifiable = []
+    for row in results:
+        row_list = []
+        for element in row:
+            if element is None:
+                pass
+            elif not (isinstance(element, int) | isinstance(element, str)):
+                row_list.append(float(element))
+            else:
+                row_list.append(element)
+        results_jsonifiable.append(row_list)
+
+    return json.dumps(results_jsonifiable)
+
+@app.route("/api/stars_load/")
+def people_load():
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    # Query all passengers
+    results = session.query(starsmix.id, starsmix.title, starsmix.year,
+                            starsmix.movie_id, starsmix.person_id).all()
+
+    # Close the session
+    session.close()
+
+    # Convert "rows" to a normal list
+    results_jsonifiable = []
+    for row in results:
+        row_list = []
+        for element in row:
+            if element is None:
+                pass
+            elif not (isinstance(element, int) | isinstance(element, str)):
+                row_list.append(float(element))
+            else:
+                row_list.append(element)
+        results_jsonifiable.append(row_list)
+
+    return json.dumps(results_jsonifiable)
+
+@app.route("/api/directors_load/")
+def people_load():
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    # Query all passengers
+    results = session.query(directorsmix.id, directorsmix.title, directorsmix.year,
+                            directorsmix.movie_id, directorsmix.person_id).all()
+
+    # Close the session
+    session.close()
+
+    # Convert "rows" to a normal list
+    results_jsonifiable = []
+    for row in results:
+        row_list = []
+        for element in row:
+            if element is None:
+                pass
+            elif not (isinstance(element, int) | isinstance(element, str)):
+                row_list.append(float(element))
+            else:
+                row_list.append(element)
+        results_jsonifiable.append(row_list)
+
+    return json.dumps(results_jsonifiable)
 
 @app.route("/api/movie_title/<title>")
 def movie_title(title):
