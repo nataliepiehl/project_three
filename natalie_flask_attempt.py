@@ -42,7 +42,12 @@ def welcome():
     """List all available api routes."""
     return (
         f"Available Routes:<br/>"
-        f"/api/movie_title<br/>"
+        f"/api/movies_load/<br/>"
+        f"/api/people_load/<br/>"
+        f"/api/ratings_load/<br/>"
+        f"/api/stars_load/<br/>"
+        f"/api/directors_load/<br/>"
+        f"/api/movie_title/my&movie&title<br/>"
     )
 
 @app.route("/api/movies_load/")
