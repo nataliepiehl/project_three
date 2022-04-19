@@ -23,7 +23,6 @@ Base = automap_base()
 Base.prepare(engine, reflect=True)
 
 # Save references to the tables
-movies = Base.classes.movies
 people = Base.classes.people
 ratingmix = Base.classes.ratingmix
 starsmix = Base.classes.starsmix
@@ -42,37 +41,11 @@ def welcome():
     """List all available api routes."""
     return (
         f"Available Routes:<br/>"
-        f"/api/movies_load/<br/>"
         f"/api/people_load/<br/>"
         f"/api/ratings_load/<br/>"
         f"/api/stars_load/<br/>"
         f"/api/directors_load/<br/>"
-        f"/api/movie_title/my&movie&title<br/>"
     )
-
-@app.route("/api/movies_load/")
-def movies_load():
-    # Create our session (link) from Python to the DB
-    session = Session(engine)
-
-    # Query all passengers
-    results = session.query(movies.title, movies.year, movies.id).all()
-
-    # Close the session
-    session.close()
-
-    # Convert "rows" to a normal list
-    results_jsonifiable = []
-    for row in results:
-        row_list = []
-        for element in row:
-            if not (isinstance(element, int) | isinstance(element, str)):
-                row_list.append(float(element))
-            else:
-                row_list.append(element)
-        results_jsonifiable.append(row_list)
-
-    return json.dumps(results_jsonifiable)
 
 @app.route("/api/people_load/")
 def people_load():
@@ -96,7 +69,8 @@ def people_load():
                 row_list.append(float(element))
             else:
                 row_list.append(element)
-        results_jsonifiable.append(row_list)
+        row_dict = dict(zip(["id", "name", "birth"], row_list))
+        results_jsonifiable.append(row_dict)
 
     return json.dumps(results_jsonifiable)
 
@@ -123,7 +97,8 @@ def ratings_load():
                 row_list.append(float(element))
             else:
                 row_list.append(element)
-        results_jsonifiable.append(row_list)
+        row_dict = dict(zip(["id", "title", "year", "movie_id", "rating", "votes"], row_list))
+        results_jsonifiable.append(row_dict)
 
     return json.dumps(results_jsonifiable)
 
@@ -150,7 +125,8 @@ def stars_load():
                 row_list.append(float(element))
             else:
                 row_list.append(element)
-        results_jsonifiable.append(row_list)
+        row_dict = dict(zip(["id", "title", "year", "movie_id", "person_id"], row_list))
+        results_jsonifiable.append(row_dict)
 
     return json.dumps(results_jsonifiable)
 
@@ -177,32 +153,10 @@ def directors_load():
                 row_list.append(float(element))
             else:
                 row_list.append(element)
-        results_jsonifiable.append(row_list)
+        row_dict = dict(zip(["id", "title", "year", "movie_id", "person_id"], row_list))
+        results_jsonifiable.append(row_dict)
 
     return json.dumps(results_jsonifiable)
-
-@app.route("/api/movie_title/<title>")
-def movie_title(title):
-    # Create our session (link) from Python to the DB
-    session = Session(engine)
-
-    # Replace underscores with spaces and capitalize
-    title = title.replace("&", " ").title()
-    print(title)
-
-    # Query all passengers
-    results = session.query(movies.title, movies.year, movies.id).filter(movies.title == title).all()[0]
-
-    # Close the session
-    session.close()
-
-    # Define dictionary
-    movie = dict(zip(["title", "year", "id"], results))
-
-    # Convert decimal to float
-    movie['year'] = float(movie['year'])
-
-    return jsonify(movie)
 
 if __name__ == '__main__':
     app.run(debug=True)
