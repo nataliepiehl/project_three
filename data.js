@@ -13,7 +13,7 @@ var query = "api/movies_load/";
 // Define full query
 console.log(url)
 console.log(query)
-let full_query = url + query;
+var full_query = url + query;
 
 //document.write(full_query);
 console.log(full_query)
