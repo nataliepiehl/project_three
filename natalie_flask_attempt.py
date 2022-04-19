@@ -72,7 +72,7 @@ def people_load():
         row_dict = dict(zip(["id", "name", "birth"], row_list))
         results_jsonifiable.append(row_dict)
 
-    return json.dumps(results_jsonifiable)
+    return json.dumps({'people': results_jsonifiable})
 
 @app.route("/api/ratings_load/")
 def ratings_load():
@@ -100,7 +100,7 @@ def ratings_load():
         row_dict = dict(zip(["id", "title", "year", "movie_id", "rating", "votes"], row_list))
         results_jsonifiable.append(row_dict)
 
-    return json.dumps(results_jsonifiable)
+    return json.dumps({'ratings': results_jsonifiable})
 
 @app.route("/api/stars_load/")
 def stars_load():
@@ -128,7 +128,7 @@ def stars_load():
         row_dict = dict(zip(["id", "title", "year", "movie_id", "person_id"], row_list))
         results_jsonifiable.append(row_dict)
 
-    return json.dumps(results_jsonifiable)
+    return json.dumps({'stars': results_jsonifiable})
 
 @app.route("/api/directors_load/")
 def directors_load():
@@ -156,7 +156,7 @@ def directors_load():
         row_dict = dict(zip(["id", "title", "year", "movie_id", "person_id"], row_list))
         results_jsonifiable.append(row_dict)
 
-    return json.dumps(results_jsonifiable)
+    return json.dumps({'directors': results_jsonifiable})
 
 if __name__ == '__main__':
     app.run(debug=True)
