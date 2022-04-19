@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, inspect
 from flask import Flask, jsonify
 from flask_cors import CORS
+from operator import itemgetter
 
 # ------------------------------------------------------------
 # Setup database
@@ -82,6 +83,12 @@ def ratings_load():
     # Query all passengers
     results = session.query(ratingmix.id, ratingmix.title, ratingmix.year,
                             ratingmix.movie_id, ratingmix.rating, ratingmix.votes).all()
+
+    # Sort by vote count
+    results = sorted(results, key=itemgetter('votes'), reverse=True)
+
+    # Select for top 1000
+    results = results[0:1000]
 
     # Close the session
     session.close()
