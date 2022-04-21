@@ -38,7 +38,7 @@ console.log('bubble_size ', bubble_size);
 var trace1 = {
     x: x_value,
     y: y_value,
-//    text: hover_text,
+    text: hover_text,
     mode: 'markers',
     marker: {
         color: x_value,
@@ -47,7 +47,7 @@ var trace1 = {
         // sizemode: 'area',
         // sizeref: 2.*max(size)/(40.**2),
         // sizemin: 4,
-//        hovermode: 'x unified',     // Tried x, y, y unified, closest
+        hovermode: 'x unified',     // Tried x, y, y unified, closest
         colorscale: 'Jet'  // Closet color scale I could find at https://plotly.com/python/builtin-colorscales/
     }
   };
