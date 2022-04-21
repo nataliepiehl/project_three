@@ -181,8 +181,7 @@ function timelinePlot(person) {
         var trace = {
           x: year,
           y: votes,
-          mode: 'markers',
-          type: 'scatter',
+          type: 'bar',
           text: title,
           textposition: 'top',
           marker: {

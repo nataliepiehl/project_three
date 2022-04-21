@@ -95,6 +95,9 @@ def popular_people_load():
     # Select for top 1000 movies
     movie_results = movie_results[0:1000]
 
+    # Move Harrison Ford to front
+    movie_results.insert(0, movie_results.pop(29))
+
     # Query for stars in these movies
     stars_results = session.query(starsmix.id, starsmix.title, starsmix.year,
                                   starsmix.movie_id, starsmix.person_id).filter(starsmix.movie_id.in_([row[3] for row in movie_results])).all()
