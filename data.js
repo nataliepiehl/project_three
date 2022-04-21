@@ -92,20 +92,29 @@ buildMetadata(value);
 
 // init();
 
+function buildRatings(movieTitle) {
+  d3.json(full_query).then((data) => {
+      var movieName = data.ratings[0].title;
+      var resultArray = data.ratings.filter(x => x.title == movieTitle)[0] || data.ratings[0];
+      // var resultArray = movieName;
+      console.log(movieName)
+      // var result = resultArray;
+      console.log(resultArray);
+      var PANEL = d3.select("#sample-movieName");
+      PANEL.html("");
+      Object.entries(resultArray).forEach(([key, value]) => {
+          PANEL.append("h6").text(`${key.toUpperCase()}: ${value}`);
+      })
+  })
+}
 
-// function buildRatings(movieTitle) {
-//     d3.json("movie").then((data) => {
-//         var movieName = data.0;
-//         var resultArray = 0.filter(x => x.0 == movieTitle);
-//         var result = resultArray[0];
-//         console.log(result)
-//         var PANEL = d3.select("movieTitle-0");
-//         PANEL.html("");
-//         Object.entries(result).forEach(([key, value]) => {
-//             PANEL.append("h6").text(`${key.toUpperCase()}: ${value}`);
-//         })
-//     })
-// }
+function optionChanged(value) {
+console.log(value);
+// charts(value);
+buildRatings(value);
+}
+
+
 function bubblely_chart(x_value, y_value, bubble_size, hover_text){
 // Passing in ratings_year, ratings_votes, ratings_rating, ratings_title as
 // x_value, y_value, bubble_size, hover_text to create the buble chart
