@@ -57,8 +57,6 @@ var trace1 = {
   var layout = {
     title: '',
     showlegend: false,
-//    height: 600,
-//    width: 1200
   };
   // Plot Buble Chart
   Plotly.newPlot('bubble', data, layout);
