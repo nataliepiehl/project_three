@@ -57,8 +57,8 @@ var trace1 = {
   var layout = {
     title: '',
     showlegend: false,
-    height: 600,
-    width: 1200
+//    height: 600,
+//    width: 1200
   };
   // Plot Buble Chart
   Plotly.newPlot('bubble', data, layout);
@@ -230,9 +230,15 @@ function timelinePlot(person) {
           title: person + ' Movies',
           xaxis: {
               showgrid: false,
+              title: {
+                    text: 'Year',
+              },
           },
           yaxis: {
               showgrid: false,
+              title: {
+                      text: 'Number of Votes',
+                },
           }
 //          showlegend: true,
         };
