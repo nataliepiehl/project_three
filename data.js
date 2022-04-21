@@ -48,7 +48,7 @@ d3.json(full_query).then(data => {
     console.log(data);
     var names = data.ratings.title;
     let dropdownMenu = d3.select("#selDataset");
-    data.ratings.slice(0, 10).forEach((name) => {
+    data.ratings.slice(0, 1000).forEach((name) => {
         // data.ratings.forEach((name) => {
         dropdownMenu.append('option').text(name.title);
 })
