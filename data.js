@@ -103,7 +103,6 @@ buildRatings("The Shawshank Redemption")
 function optionChanged(value) {
     console.log(value);
     buildRatings(value);
-    buildMetadata(value);
 }
 
 function input_output_panel(ratings_year, ratings_votes, ratings_rating, ratings_title, newText){
@@ -187,6 +186,10 @@ function timelinePlot(person) {
           marker: {
               size: rating_mod,
               color: rating_mod,
+              colorscale: 'Portland',
+//              line: {
+//                width = 2,
+//              },
             },
         };
 
