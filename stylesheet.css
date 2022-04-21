@@ -1,0 +1,24 @@
+/* Change font across whole app */
+* {
+ font-size: 100%;
+ font-family: Tahoma;
+ color: #0b1414
+}
+
+/* Format jumbotron */
+.jumbotron {
+    background: #8bc4c3;
+    border-radius: 50px;
+    border-style:solid;
+    border-color: #2d8583;
+}
+
+.well {
+    background-color: #8bc4c3;
+}
+
+/* Format panels */
+.panel-default > .panel-heading-custom {
+    background-color: #8bc4c3;
+    color: black;
+}

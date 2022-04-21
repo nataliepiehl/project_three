@@ -7,6 +7,7 @@
     <title>Movie Database</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
 </head>
 <body>
     <div class="container">
@@ -17,29 +18,24 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-2">
+          <div class="col-md-6">
             <div class="well">
-              <h5>Movie Name:</h5>
+              <h4>Movie Name:</h4>
+                <hr>
               <select id="selDataset" onchange="optionChanged(this.value)"></select>
             </div>
-            <div class="panel panel-primary">
-              <div class="panel-heading">
+            <div class="panel panel-default">
+              <div class="panel-heading panel-heading-custom">
                 <h3 class="panel-title">Movie Info</h3>
               </div>
               <div id="sample-movieName" class="panel-body"></div>
             </div>
           </div>
-          <div class="col-md-5">
-            <div id="bar"></div>
-          </div>
-          <div class="col-md-4">
-            <!-- <div id="gauge"></div> -->
+          <div class="col-md-6">
             <div>
-              <!-- <button id="click-me">Click Me!</button> -->
-              <!-- <label for="input-field">Pick a year (1972-2019 inclusive)</label><br> -->
               <input id="input-field" type="text"></input><br>
               <div class="panel panel-info">
-                <div class="panel-heading">
+                <div class="panel-heading panel-heading-custom">
                   <h2 class="panel-title">Type in a year above (1972-2019 inclusive)  <br><br>Get popular movie details below</h2>
                 </div>
                 <div id="sample-year" class="panel-body"></div>
@@ -51,6 +47,24 @@
           <div class="col-md-12">
             <div id="bubble"></div>
           </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="well">
+                    <h4>Star Name:</h4>
+                    <hr>
+                    <select id="selActor" onchange="actorChanged(this.value)"></select>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading panel-heading-custom">
+                        <h3 class="panel-title">Star Info</h3>
+                    </div>
+                    <div id="star-metadata" class="panel-body"></div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div id="timeline"></div>
+            </div>
         </div>
       </div>
     <div id="plot"></div>

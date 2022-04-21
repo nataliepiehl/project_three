@@ -165,5 +165,83 @@ def directors_load():
 
     return json.dumps({'directors': results_jsonifiable})
 
+@app.route("/api/popular_people_load/")
+def popular_people_load():
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    # Query all movies
+    movie_results = session.query(ratingmix.id, ratingmix.title, ratingmix.year,
+                                  ratingmix.movie_id, ratingmix.rating, ratingmix.votes).all()
+
+    # Sort by vote count
+    movie_results = sorted(movie_results, key=itemgetter('votes'), reverse=True)
+
+    # Select for top 1000 movies
+    movie_results = movie_results[0:1000]
+
+    # Query for stars in these movies
+    stars_results = session.query(starsmix.id, starsmix.title, starsmix.year,
+                                  starsmix.movie_id, starsmix.person_id).filter(starsmix.movie_id.in_([row[3] for row in movie_results])).all()
+
+    # Query for these people
+    results = session.query(people.id, people.name, people.birth).filter(people.id.in_([row[4] for row in stars_results])).all()
+
+    # Close the session
+    session.close()
+
+    # Convert "rows" to a normal list
+    results_jsonifiable = []
+    for row in results:
+        row_list = []
+        for element in row:
+            if element is None:
+                pass
+            elif not (isinstance(element, int) | isinstance(element, str)):
+                row_list.append(float(element))
+            else:
+                row_list.append(element)
+        row_dict = dict(zip(["id", "name", "birth"], row_list))
+        results_jsonifiable.append(row_dict)
+
+    return json.dumps({'popular_people': results_jsonifiable})
+
+@app.route("/api/person_load/<person>")
+def person_load(person):
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    # Format person
+    person = person.replace("&", " ").title()
+
+    # Query for person ID
+    person_id = session.query(people.id, people.name, people.birth).filter(people.name == person).all()
+
+    # Query for stars in these movies
+    results = session.query(starsmix.id, starsmix.title, starsmix.year,
+                            starsmix.movie_id, starsmix.person_id, ratingmix.votes, ratingmix.rating).\
+                filter(starsmix.person_id == person_id[0][0]).\
+                join(ratingmix, starsmix.movie_id == ratingmix.movie_id).all()
+
+    # Close the session
+    session.close()
+
+    # Convert "rows" to a normal list
+    results_jsonifiable = []
+    for count, row in enumerate(results):
+        row_list = []
+        for element in row:
+            if element is None:
+                pass
+            elif not (isinstance(element, int) | isinstance(element, str)):
+                row_list.append(float(element))
+            else:
+                row_list.append(element)
+        row_dict = dict(zip(["id", "title", "year", "movie_id", "person_id", "votes", "rating"], row_list))
+        # results_jsonifiable.append({f"r{count}": row_dict})
+        results_jsonifiable.append(row_dict)
+
+    return json.dumps({'person_movies': results_jsonifiable})
+
 if __name__ == '__main__':
     app.run(debug=True)

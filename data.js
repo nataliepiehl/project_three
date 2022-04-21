@@ -29,8 +29,43 @@ console.log(full_query)
 
 // let response = fetch(full_query);
 
+function bubblely_chart(x_value, y_value, bubble_size, hover_text){
+// Passing in ratings_year, ratings_votes, ratings_rating, ratings_title as
+// x_value, y_value, bubble_size, hover_text to create the buble chart
+console.log('bubble_size ', bubble_size);
+// bubble_size = bubble_size * 1000   // Minimal change even with huge multipliers
+console.log('bubble_size ', bubble_size);
+var trace1 = {
+    x: x_value,
+    y: y_value,
+//    text: hover_text,
+    mode: 'markers',
+    marker: {
+        color: x_value,
+        size: bubble_size,  // Tried pop, and several other options
+        // size: [15, 30, 55, 70, 90, 110, 15, 30, 55, 70, 90, 110, 15, 30, 55, 70, 90, 110,15, 30, 55, 70, 90, 110, 15, 30, 55, 70, 90, 110, 15, 30, 55, 70, 90, 110],
+        // sizemode: 'area',
+        // sizeref: 2.*max(size)/(40.**2),
+        // sizemin: 4,
+//        hovermode: 'x unified',     // Tried x, y, y unified, closest
+        colorscale: 'Jet'  // Closet color scale I could find at https://plotly.com/python/builtin-colorscales/
+    }
+  };
+
+  var data = [trace1];
+
+  var layout = {
+    title: '',
+    showlegend: false,
+    height: 600,
+    width: 1200
+  };
+  // Plot Buble Chart
+  Plotly.newPlot('bubble', data, layout);
+}
+
 // function init() {
-  d3.json(full_query).then(data => {
+d3.json(full_query).then(data => {
     console.log(full_query);
     console.log(data);
     var names = data.ratings.title;
@@ -38,59 +73,43 @@ console.log(full_query)
     data.ratings.slice(0, 10).forEach((name) => {
         // data.ratings.forEach((name) => {
         dropdownMenu.append('option').text(name.title);
-    })
+})
 
-    ratings_id = data.ratings.map(d => d["id"]);
-    ratings_movie_id = data.ratings.map(d => d["movie_id"]);
-    ratings_rating = data.ratings.map(d => d["rating"]);
-    ratings_title = data.ratings.map(d => d["title"]);
-    ratings_votes = data.ratings.map(d => d["votes"]);
-    ratings_year = data.ratings.map(d => d["year"]);
+ratings_id = data.ratings.map(d => d["id"]);
+ratings_movie_id = data.ratings.map(d => d["movie_id"]);
+ratings_rating = data.ratings.map(d => d["rating"]);
+ratings_title = data.ratings.map(d => d["title"]);
+ratings_votes = data.ratings.map(d => d["votes"]);
+ratings_year = data.ratings.map(d => d["year"]);
 
-    // console.log('ratings_id ', ratings_id);
-    // console.log('ratings_movie_id  ', ratings_movie_id);
-    // console.log('ratings_rating ', ratings_rating);
-    // console.log('ratings_title  ', ratings_title);
-    // console.log('votes ', ratings_votes);
-    // console.log('ratings_year ', ratings_year);
+// console.log('ratings_id ', ratings_id);
+// console.log('ratings_movie_id  ', ratings_movie_id);
+// console.log('ratings_rating ', ratings_rating);
+// console.log('ratings_title  ', ratings_title);
+// console.log('votes ', ratings_votes);
+// console.log('ratings_year ', ratings_year);
 
-    bubblely_chart(ratings_year, ratings_votes, ratings_rating, ratings_title)
+bubblely_chart(ratings_year, ratings_votes, ratings_rating, ratings_title)
 
 
-    // Getting a reference to the input element on the page with the id property set to 'input-field'
-    var inputField = d3.select("#input-field");
-    console.log('inputField after call to bubblely_chart', inputField);
+// Getting a reference to the input element on the page with the id property set to 'input-field'
+var inputField = d3.select("#input-field");
+console.log('inputField after call to bubblely_chart', inputField);
 
-      // Input fields can trigger a change event when new text is entered.
-      console.log('ratings_year ', ratings_year);
-      inputField.on("change", function() {newText
-        var newText = d3.event.target.value;
-      console.log('The year selected is ', newText);
-    
-      input_output_panel(ratings_year, ratings_votes, ratings_rating, ratings_title, newText)
+  // Input fields can trigger a change event when new text is entered.
+  console.log('ratings_year ', ratings_year);
+  inputField.on("change", function() {newText
+    var newText = d3.event.target.value;
+  console.log('The year selected is ', newText);
 
-    });
+  input_output_panel(ratings_year, ratings_votes, ratings_rating, ratings_title, newText)
 
-  });
+});
+
+});
 
 
 // }
-
-function optionChanged(value) {
-console.log(value);
-// Getting a reference to the input element on the page with the id property set to 'input-field'
-// var inputField = d3.select("#input-field");
-
-// Input fields can trigger a change event when new text is entered.
-// inputField.on("change", function() {
-//   var newText = d3.event.target.value;
-//   console.log('You entered the year: ', newText);
-// });
-charts(value);
-buildMetadata(value);
-}
-
-// init();
 
 function buildRatings(movieTitle) {
   d3.json(full_query).then((data) => {
@@ -108,46 +127,13 @@ function buildRatings(movieTitle) {
   })
 }
 
+buildRatings("The Shawshank Redemption")
+
 function optionChanged(value) {
-console.log(value);
-// charts(value);
-buildRatings(value);
-}
-
-
-function bubblely_chart(x_value, y_value, bubble_size, hover_text){
-// Passing in ratings_year, ratings_votes, ratings_rating, ratings_title as
-// x_value, y_value, bubble_size, hover_text to create the buble chart
-console.log('bubble_size ', bubble_size);   
-// bubble_size = bubble_size * 1000   // Minimal change even with huge multipliers  
-console.log('bubble_size ', bubble_size);   
-var trace1 = {
-    x: x_value,
-    y: y_value,
-    text: hover_text,
-    mode: 'markers',
-    marker: {
-        color: x_value,
-        size: bubble_size,  // Tried pop, and several other options 
-        // size: [15, 30, 55, 70, 90, 110, 15, 30, 55, 70, 90, 110, 15, 30, 55, 70, 90, 110,15, 30, 55, 70, 90, 110, 15, 30, 55, 70, 90, 110, 15, 30, 55, 70, 90, 110],
-        // sizemode: 'area',
-        // sizeref: 2.*max(size)/(40.**2),
-        // sizemin: 4,
-        hovermode: 'x unified',     // Tried x, y, y unified, closest
-        colorscale: 'Jet'  // Closet color scale I could find at https://plotly.com/python/builtin-colorscales/
-    }
-  };
-  
-  var data = [trace1];
-  
-  var layout = {
-    title: '',
-    showlegend: false,
-    height: 600,
-    width: 1200
-  };
-  // Plot Buble Chart
-  Plotly.newPlot('bubble', data, layout);
+    console.log(value);
+//    charts(value);
+    buildRatings(value);
+    buildMetadata(value);
 }
 
 function input_output_panel(ratings_year, ratings_votes, ratings_rating, ratings_title, newText){
@@ -176,4 +162,94 @@ function input_output_panel(ratings_year, ratings_votes, ratings_rating, ratings
     panel_metadata.append("h6").text(`${key}: ${value}`);
   });
 
+}
+
+var actor_query = url + "api/popular_people_load/";
+
+// Pull actor data
+d3.json(actor_query).then(data => {
+    // Print query and data to console
+    console.log(actor_query);
+    console.log(data);
+
+    // Populate dropdown menu
+    let dropdownMenu = d3.select("#selActor");
+    data.popular_people.forEach((person) => {
+        dropdownMenu.append('option').text(person.name);
+    })
+});
+
+// Generate timeline plot
+function timelinePlot(person) {
+    // Format person name for query
+    var person_mod = person.replace(" ", "&");
+
+    // Grab movies this person has been in
+    var person_query = url + "api/person_load/" + person_mod;
+    console.log(person_query)
+
+    // Pull actor data
+    d3.json(person_query).then(data => {
+        // Print query and data to console
+        console.log(data);
+
+        // Define data lists
+        var year = [];
+        var votes = [];
+        var rating = [];
+        var title = []
+        data.person_movies.forEach((movie) => {
+            year.push(movie.year);
+            votes.push(movie.votes);
+            rating.push(movie.rating);
+            title.push(movie.title);
+        })
+
+        // Format sizes
+        rating_mod = rating.map(x => x * 5)
+
+        // Define trace
+        var trace = {
+          x: year,
+          y: votes,
+          mode: 'markers',
+          type: 'scatter',
+          text: title,
+          textposition: 'top',
+          marker: {
+              size: rating_mod,
+              color: rating_mod,
+            },
+        };
+
+        // Define data
+        var data = [trace];
+
+        // Define layout
+        var layout = {
+          title: person + ' Movies',
+          xaxis: {
+              showgrid: false,
+          },
+          yaxis: {
+              showgrid: false,
+          }
+//          showlegend: true,
+        };
+
+        // Generate plot
+        Plotly.newPlot('timeline', data, layout);
+    });
+}
+
+// Generate initial timelinePlot
+timelinePlot("John Belushi")
+
+// When actor changes...
+function actorChanged(person) {
+  // Print change to console
+  console.log(person);
+
+  // Generate timeline plot
+  timelinePlot(person)
 }
