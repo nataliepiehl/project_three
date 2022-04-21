@@ -195,6 +195,7 @@ function timelinePlot(person) {
 
         // Define layout
         var layout = {
+          hovermode:'closest',
           title: person + ' Movies',
           xaxis: {
               showgrid: false,
