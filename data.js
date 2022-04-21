@@ -1,37 +1,17 @@
 // Define local URL
 var url = "http://127.0.0.1:5000/";
 
-var indexOfYear = 1972
-
 // Define query
 var query = "api/ratings_load/";
 
 // Define full query
 var full_query = url + query;
-
-//document.write(full_query);
 console.log(full_query)
 
-// Fetch the data
-// fetch(full_query)
-//     .then(response =>
-//         response.json()
-//     )
-//     .then((data) => {
-//         console.log(data)
-//     })
-
-// var ratings = data.ratings.title
-//     console.log(ratings)
-
-
-// init(data)
-
-// let response = fetch(full_query);
-
+// Define bubble chart code
 function bubblely_chart(x_value, y_value, bubble_size, hover_text){
 // Passing in ratings_year, ratings_votes, ratings_rating, ratings_title as
-// x_value, y_value, bubble_size, hover_text to create the buble chart
+// x_value, y_value, bubble_size, hover_text to create the bubble chart
 console.log('bubble_size ', bubble_size);
 // bubble_size = bubble_size * 1000   // Minimal change even with huge multipliers
 console.log('bubble_size ', bubble_size);
@@ -43,7 +23,6 @@ var trace1 = {
     marker: {
         color: x_value,
         size: bubble_size,  // Tried pop, and several other options
-        // size: [15, 30, 55, 70, 90, 110, 15, 30, 55, 70, 90, 110, 15, 30, 55, 70, 90, 110,15, 30, 55, 70, 90, 110, 15, 30, 55, 70, 90, 110, 15, 30, 55, 70, 90, 110],
         // sizemode: 'area',
         // sizeref: 2.*max(size)/(40.**2),
         // sizemin: 4,
@@ -58,6 +37,7 @@ var trace1 = {
     title: '',
     showlegend: false,
   };
+
   // Plot Buble Chart
   Plotly.newPlot('bubble', data, layout);
 }
@@ -73,6 +53,7 @@ d3.json(full_query).then(data => {
         dropdownMenu.append('option').text(name.title);
 })
 
+// Extract ratings data
 ratings_id = data.ratings.map(d => d["id"]);
 ratings_movie_id = data.ratings.map(d => d["movie_id"]);
 ratings_rating = data.ratings.map(d => d["rating"]);
@@ -80,15 +61,8 @@ ratings_title = data.ratings.map(d => d["title"]);
 ratings_votes = data.ratings.map(d => d["votes"]);
 ratings_year = data.ratings.map(d => d["year"]);
 
-// console.log('ratings_id ', ratings_id);
-// console.log('ratings_movie_id  ', ratings_movie_id);
-// console.log('ratings_rating ', ratings_rating);
-// console.log('ratings_title  ', ratings_title);
-// console.log('votes ', ratings_votes);
-// console.log('ratings_year ', ratings_year);
-
+// Execute bubble chart
 bubblely_chart(ratings_year, ratings_votes, ratings_rating, ratings_title)
-
 
 // Getting a reference to the input element on the page with the id property set to 'input-field'
 var inputField = d3.select("#input-field");
@@ -97,17 +71,14 @@ console.log('inputField after call to bubblely_chart', inputField);
   // Input fields can trigger a change event when new text is entered.
   console.log('ratings_year ', ratings_year);
   inputField.on("change", function() {newText
-    var newText = d3.event.target.value;
-  console.log('The year selected is ', newText);
+      var newText = d3.event.target.value;
+      console.log('The year selected is ', newText);
 
-  input_output_panel(ratings_year, ratings_votes, ratings_rating, ratings_title, newText)
+      input_output_panel(ratings_year, ratings_votes, ratings_rating, ratings_title, newText)
+
+    });
 
 });
-
-});
-
-
-// }
 
 function buildRatings(movieTitle) {
   d3.json(full_query).then((data) => {
@@ -125,11 +96,12 @@ function buildRatings(movieTitle) {
   })
 }
 
+// Run initial ratings build
 buildRatings("The Shawshank Redemption")
 
+// Build outputs upon movie change
 function optionChanged(value) {
     console.log(value);
-//    charts(value);
     buildRatings(value);
     buildMetadata(value);
 }
@@ -137,7 +109,6 @@ function optionChanged(value) {
 function input_output_panel(ratings_year, ratings_votes, ratings_rating, ratings_title, newText){
   // Passing in ratings_year, ratings_votes, ratings_rating, ratings_title, newText as 
   // ratings_year, ratings_votes, ratings_rating, ratings_title, newText
-
   for (var i = 0; i < ratings_year.length; i++) {
     var item = ratings_year[i];
     // console.log('Ratings_year[i] is ', ratings_year[i]);

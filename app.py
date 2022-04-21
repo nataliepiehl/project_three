@@ -1,9 +1,6 @@
 # ------------------------------------------------------------
 # Import modules
 import json
-import numpy as np
-import pandas as pd
-import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, inspect
@@ -48,33 +45,6 @@ def welcome():
         f"/api/directors_load/<br/>"
     )
 
-@app.route("/api/people_load/")
-def people_load():
-    # Create our session (link) from Python to the DB
-    session = Session(engine)
-
-    # Query all passengers
-    results = session.query(people.id, people.name, people.birth).all()
-
-    # Close the session
-    session.close()
-
-    # Convert "rows" to a normal list
-    results_jsonifiable = []
-    for row in results:
-        row_list = []
-        for element in row:
-            if element is None:
-                pass
-            elif not (isinstance(element, int) | isinstance(element, str)):
-                row_list.append(float(element))
-            else:
-                row_list.append(element)
-        row_dict = dict(zip(["id", "name", "birth"], row_list))
-        results_jsonifiable.append(row_dict)
-
-    return json.dumps({'people': results_jsonifiable})
-
 @app.route("/api/ratings_load/")
 def ratings_load():
     # Create our session (link) from Python to the DB
@@ -109,61 +79,6 @@ def ratings_load():
 
     return json.dumps({'ratings': results_jsonifiable})
 
-@app.route("/api/stars_load/")
-def stars_load():
-    # Create our session (link) from Python to the DB
-    session = Session(engine)
-
-    # Query all passengers
-    results = session.query(starsmix.id, starsmix.title, starsmix.year,
-                            starsmix.movie_id, starsmix.person_id).all()
-
-    # Close the session
-    session.close()
-
-    # Convert "rows" to a normal list
-    results_jsonifiable = []
-    for row in results:
-        row_list = []
-        for element in row:
-            if element is None:
-                pass
-            elif not (isinstance(element, int) | isinstance(element, str)):
-                row_list.append(float(element))
-            else:
-                row_list.append(element)
-        row_dict = dict(zip(["id", "title", "year", "movie_id", "person_id"], row_list))
-        results_jsonifiable.append(row_dict)
-
-    return json.dumps({'stars': results_jsonifiable})
-
-@app.route("/api/directors_load/")
-def directors_load():
-    # Create our session (link) from Python to the DB
-    session = Session(engine)
-
-    # Query all passengers
-    results = session.query(directorsmix.id, directorsmix.title, directorsmix.year,
-                            directorsmix.movie_id, directorsmix.person_id).all()
-
-    # Close the session
-    session.close()
-
-    # Convert "rows" to a normal list
-    results_jsonifiable = []
-    for row in results:
-        row_list = []
-        for element in row:
-            if element is None:
-                pass
-            elif not (isinstance(element, int) | isinstance(element, str)):
-                row_list.append(float(element))
-            else:
-                row_list.append(element)
-        row_dict = dict(zip(["id", "title", "year", "movie_id", "person_id"], row_list))
-        results_jsonifiable.append(row_dict)
-
-    return json.dumps({'directors': results_jsonifiable})
 
 @app.route("/api/popular_people_load/")
 def popular_people_load():

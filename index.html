@@ -39,9 +39,10 @@
                     </div>
                 </div>
               <input id="input-field" type="text"></input><br>
+                <p></p>
               <div class="panel panel-info">
                 <div class="panel-heading panel-heading-custom">
-                  <h2 class="panel-title">Type in a year above (1972-2019 inclusive)  <br><br>The most popular movie by votes of selected year.</h2>
+                  <h2 class="panel-title">Type in a year above (1972-2019 inclusive) <br><br>The most popular movie by votes of selected year.</h2>
                 </div>
                 <div id="sample-year" class="panel-body"></div>
               </div>
@@ -60,12 +61,6 @@
                     <hr>
                     <select id="selActor" onchange="actorChanged(this.value)"></select>
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading panel-heading-custom">
-                        <h3 class="panel-title">Star Info</h3>
-                    </div>
-                    <div id="star-metadata" class="panel-body"></div>
-                </div>
             </div>
             <div class="col-md-9">
                 <div id="timeline"></div>
@@ -73,7 +68,6 @@
         </div>
       </div>
     <div id="plot"></div>
-
     <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="data.js"></script>
