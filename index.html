@@ -42,7 +42,7 @@
                 <p></p>
               <div class="panel panel-info">
                 <div class="panel-heading panel-heading-custom">
-                  <h2 class="panel-title">Type in a year above (1972-2019 inclusive) <br><br>The most popular movie by votes of selected year.</h2>
+                  <h2 class="panel-title">Input a year above (1972-2019 inclusive) <br><br>The most popular movie by votes for selected year below</h2>
                 </div>
                 <div id="sample-year" class="panel-body"></div>
               </div>
@@ -50,9 +50,28 @@
           </div>
         </div>
         <div class="row">
+          <p> </p>
+        </div>
+        <h1> </h1>  <!-- Adding some extra space between charts to make them stand out better--> 
+        <h1> </h1>  
+        <div class="row">
           <div class="col-md-12">
+            <div class="row">
+            <h1> </h1>
+            </div>
             <div id="bubble"></div>
+            <div class="row">
+              <p> </p>
+            </div>
+            <h1> </h1>  <!-- Adding some extra space between charts to make them stand out better-->
+            <h1> </h1>  
           </div>
+        </div>
+        <div class="row">
+          <p> </p>
+        </div>
+        <div class="row">
+          <p> </p>
         </div>
         <div class="row">
             <div class="col-md-3">
@@ -62,14 +81,32 @@
                     <select id="selActor" onchange="actorChanged(this.value)"></select>
                 </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-5">
                 <div id="timeline"></div>
+            </div>
+            <div class = "col-md-4">
+                <canvas id="myChart"></canvas>
             </div>
         </div>
       </div>
     <div id="plot"></div>
+    <div class="row">
+      <p> </p>
+    </div>
+<!--    <h1> </h1>  &lt;!&ndash; Adding some extra space between charts to make them stand out better&ndash;&gt;-->
+<!--    <h1> </h1>-->
+<!--    <h1> </h1>-->
+<!--      <p> </p>-->
+<!--    </div>-->
+<!--    <div class = "chart-container">-->
+<!--      <canvas id="myChart"></canvas>-->
+<!--    </div>-->
+<!--    <h1> </h1>  &lt;!&ndash; Adding some extra space between charts to make them stand out better&ndash;&gt;-->
+<!--    <h1> </h1>-->
+<!--    <h1> </h1>-->
     <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="data.js"></script>
 </body>
 </html>

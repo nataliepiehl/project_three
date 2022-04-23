@@ -9,23 +9,25 @@ var full_query = url + query;
 console.log(full_query)
 
 // Define bubble chart code
-function bubblely_chart(x_value, y_value, bubble_size, hover_text){
-// Passing in ratings_year, ratings_votes, ratings_rating, ratings_title as
-// x_value, y_value, bubble_size, hover_text to create the bubble chart
-console.log('bubble_size ', bubble_size);
-// bubble_size = bubble_size * 1000   // Minimal change even with huge multipliers
+function bubblely_chart(x_value, bubble_size, y_value, hover_text){
+// Passing in ratings_year, ratings_votes, ratings_rating, ratings_title
+// as x_value, y_value, bubble_size, hover_text to create the bubble chart
+var New_array = []
+var total=1;
+
+for (var i = 0; i < bubble_size.length; ++i) {
+    New_array[i] = (bubble_size[i] / 35000);
+}
+bubble_size = New_array
 console.log('bubble_size ', bubble_size);
 var trace1 = {
     x: x_value,
-    y: y_value,
+    y: y_value, // bubble_size,
     text: hover_text,
     mode: 'markers',
     marker: {
         color: x_value,
-        size: bubble_size,  // Tried pop, and several other options
-        // sizemode: 'area',
-        // sizeref: 2.*max(size)/(40.**2),
-        // sizemin: 4,
+        size: bubble_size,   // Tried pop, and several other options
         hovermode: 'x unified',     // Tried x, y, y unified, closest
         colorscale: 'Jet'  // Closet color scale I could find at https://plotly.com/python/builtin-colorscales/
     }
@@ -34,8 +36,10 @@ var trace1 = {
   var data = [trace1];
 
   var layout = {
-    title: '',
+    title: 'Most popular movies by year (based on votes)',
     showlegend: false,
+//    height: 600,
+//    width: 1200
   };
 
   // Plot Buble Chart
@@ -62,7 +66,7 @@ ratings_votes = data.ratings.map(d => d["votes"]);
 ratings_year = data.ratings.map(d => d["year"]);
 
 // Execute bubble chart
-bubblely_chart(ratings_year, ratings_votes, ratings_rating, ratings_title)
+bubblely_chart(ratings_year.slice(0,500), ratings_votes.slice(0,500), ratings_rating.slice(0,500), ratings_title.slice(0,500))
 
 // Getting a reference to the input element on the page with the id property set to 'input-field'
 var inputField = d3.select("#input-field");
@@ -73,7 +77,6 @@ console.log('inputField after call to bubblely_chart', inputField);
   inputField.on("change", function() {newText
       var newText = d3.event.target.value;
       console.log('The year selected is ', newText);
-
       input_output_panel(ratings_year, ratings_votes, ratings_rating, ratings_title, newText)
 
     });
@@ -231,3 +234,74 @@ function actorChanged(person) {
   // Generate timeline plot
   timelinePlot(person)
 }
+
+var birth_query = url + "api/popular_people_load/";
+let test;
+// Pull actor data
+d3.json(birth_query).then((data) => {
+  // Print query and data to console
+  // console.log(actor_query);
+  const individual_years = data.popular_people.map((actor) => actor.birth);
+  test = individual_years.reduce(
+    (finalyears, each_year) => {
+      if (each_year > 1900 && each_year <= 1925) {
+        finalyears[0] += 1;
+      }
+      if (each_year > 1925 && each_year <= 1950) {
+        finalyears[1] += 1;
+      }
+      if (each_year > 1950 && each_year <= 1975) {
+        finalyears[2] += 1;
+      }
+      if (each_year > 1975 && each_year <= 2000) {
+        finalyears[3] += 1;
+      }
+      if (each_year > 2000) {
+        finalyears[4] += 1;
+      }
+      return finalyears;
+    },
+    [0, 0, 0, 0, 0]
+  );
+  console.log(test);
+  const chartData = {
+    labels: [
+      "Less than 1925",
+      "From 1925 to 1950",
+      "From 1950 to 1975",
+      "From 1975 to 2000",
+      "From 2000+",
+    ],
+    datasets: [
+      {
+        label: "My First Dataset",
+        data: test,
+        backgroundColor: [
+          "rgb(54, 162, 235)",
+          "rgb(255, 205, 86)",
+          "rgb(255, 99, 132)",
+          "rgb(0, 255, 0)",
+          "rgb(255, 0, 0)",
+        ],
+        hoverOffset: 7,
+      },
+    ],
+  };
+  const config = {
+    type: "doughnut",
+    data: chartData,
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "top",
+        },
+        title: {
+          display: true,
+          text: "Actors' Birth Years (grouped by quarter)",
+        },
+      },
+    },
+  };
+  new Chart(document.getElementById("myChart"), config);
+}); 
